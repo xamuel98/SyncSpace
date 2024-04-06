@@ -1,0 +1,42 @@
+.cm-checkbox {
+	@apply relative inline-flex h-5 w-5 select-none align-bottom;
+
+	.cm-checkbox-input {
+		@apply border-dark-950 absolute left-0 top-0 z-[1] m-0 h-full w-full cursor-pointer appearance-none rounded-md border p-0 opacity-0 outline-none outline-0;
+	}
+
+	.cm-checkbox-box {
+		@apply border-dark-950 flex h-5 w-5 items-center justify-center rounded-[5px] border bg-white outline-[transparent];
+		color: #334155;
+		transition:
+			background-color 0.2s,
+			color 0.2s,
+			border-color 0.2s,
+			box-shadow 0.2s,
+			outline-color 0.2s;
+		box-shadow:
+			0 0 #0000,
+			0 0 #0000,
+			0 1px 2px 0 rgba(18, 18, 23, 0.05);
+
+		.cm-checkbox-icon .cm-checkbox-icon {
+			@apply text-sm/3 text-white;
+			transition-duration: 0.2s;
+
+			&.cm-icon {
+				@apply h-3 w-3;
+			}
+		}
+	}
+
+	&:not(.cm-disabled):has(.cm-checkbox-input:hover).cm-highlight
+		.cm-checkbox-box,
+	&:not(.cm-disabled):has(.cm-checkbox-input:checked).cm-highlight
+		.cm-checkbox-box {
+		@apply border-dark-950 bg-dark-950 text-white;
+	}
+
+	&:not(.cm-disabled):has(.cm-checkbox-input:hover) .cm-checkbox-box {
+		@apply border-dark-400
+	}
+}

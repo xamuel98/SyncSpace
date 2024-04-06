@@ -1,0 +1,22 @@
+<svg width="1266" height="1166" viewBox="0 0 1266 1166" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <style> 
+        @keyframes trace {
+            to {
+                stroke-dashoffset: 0;
+            }
+        }
+        .trace {
+            stroke-dasharray: 1500;
+            stroke-dashoffset: 1500;
+            animation: trace 5s infinite linear;
+        }
+    </style>
+    <defs>
+        <linearGradient id="gradient1" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#0000FF" />
+            <stop offset="100%" stop-color="#FF0000" />
+        </linearGradient>
+    </defs>
+    <path class="trace" d="M61.2069 1L1 288.655L389 870.655H61.2069L255.207 1165H723.483L783.69 884.035L201.69 1H61.2069Z" stroke="#202020" stroke-width="0.5"/>
+    <path class="trace" d="M482.655 288.655L536.172 1H1004.45L1205.14 288.655L884.035 295.345L1265.34 870.655L1218.52 1165H1071.34L482.655 288.655Z" stroke="#202020" stroke-width="0.5"/>
+</svg>
