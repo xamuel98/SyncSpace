@@ -14,12 +14,14 @@ const AuthHeader = () => {
 
     return (
         <header className='fixed inset-0 z-50 bg-white flex items-center justify-between border border-[#F3F4F7] max-h-[6.1875rem] px-6 lg:px-[3.125rem] py-8'>
-            <Image 
-                src="/images/syncspace-logo-black.svg"
-                width={131}
-                height={35}
-                alt="SyncSpace Black Logo"
-            />
+            <Link href="/">
+                <Image 
+                    src="/images/syncspace-logo-black.svg"
+                    width={131}
+                    height={35}
+                    alt="SyncSpace Black Logo"
+                />
+            </Link>
             <div className="relative block sm:hidden">
                 <button onClick={() => toggleDropdown()} className='flex link font-medium text-sm gap-2 items-center'>
                     <span>Resources</span>
