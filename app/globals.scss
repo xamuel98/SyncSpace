@@ -75,12 +75,33 @@ $headingFont: var(--bricolage-default);
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+
+  .bricolage {
+    font-family: $headingFont;
+  }
+
+  .auth-header--text {
+    font-size: clamp(1rem, 6vw, 40px)
+  }
+  
+  .auth-base--text {
+    font-size: clamp(14px, 1.5vw, 16px)
   }
 }
 
 @layer utilities {
+  .flex-center {
+    @apply flex justify-center items-center;
+  }
+
+  .flex-between {
+    @apply flex justify-between items-center;
+  }
+
   .auth-layout--pt {
     padding-top: calc(99px + 106px);
 
@@ -88,14 +109,31 @@ $headingFont: var(--bricolage-default);
       padding-top: 150px;
     }
   }
+
+  .link {
+    @apply text-dark-950 hover:text-[#3d3d3d] transition-colors duration-300 ease-in-out;
+  }
 }
 
-.auth-header--text {
-  font-size: clamp(1rem, 6vw, 40px)
-}
-
-.auth-base--text {
-  font-size: clamp(14px, 1.5vw, 16px)
+@layer components { 
+  .form-input {
+    @apply border border-[#E7E7E7] w-full h-[52px] py-3.5 px-4 text-dark-950 font-normal text-base/6 rounded-xl outline-none shadow-none box-border m-0 min-w-0;
+    transition: all .25s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
+    font-family: $primaryFont;
+    transform-origin: center top;
+    font-feature-settings: "tnum", "tnum", "tnum";
+  
+    &:hover,
+    &:focus {
+      @apply ring-1 ring-dark-950;
+    }
+  
+    &::-webkit-input-placeholder,
+    &::-moz-placeholder,
+    &::placeholder {
+      @apply font-normal text-base/6 text-dark-400;
+    }
+  }
 }
 
 @media (max-width: 640px) {
@@ -121,34 +159,88 @@ $headingFont: var(--bricolage-default);
   }
 }
 
-.form-input {
-  @apply border border-[#E7E7E7] w-full h-[52px] py-3.5 px-4 text-dark-950 font-normal text-base/6 rounded-xl outline-none shadow-none box-border m-0 min-w-0;
-  transition: all .25s cubic-bezier(0.075, 0.82, 0.165, 1) 0s;
-  font-family: $primaryFont;
-  transform-origin: center top;
-  font-feature-settings: "tnum", "tnum", "tnum";
-
-  &:hover,
-  &:focus {
-    @apply ring-1 ring-dark-950;
-  }
-
-  &::-webkit-input-placeholder,
-  &::-moz-placeholder,
-  &::placeholder {
-    @apply font-normal text-base/6 text-dark-400;
-  }
-}
-
 .resources-dropdown {
   touch-action: none;
   transition: transform .5s cubic-bezier(.32, .72, 0, 1);
 }
 
-.link {
-  @apply text-dark-950 hover:text-[#3d3d3d] transition-colors duration-300 ease-in-out;
+.sidebar {
+  @apply max-md:hidden fixed left-0 bg-white border-r border-[#F3F4F7] w-full max-w-72 min-h-screen;
+
+  &-items {
+    @apply flex flex-col gap-y-4 mr-4 list-none py-6 h-auto;
+  }
+
+  &-item {
+    position: relative;
+
+    &--active {
+      &::before {
+        content: '';
+        position: absolute;
+        height: -webkit-fill-available;
+        width: 8px;
+        background: #202020;
+        border-top-right-radius: 12px;
+        border-bottom-right-radius: 12px;
+        left: 0;
+        top: 0;
+      }
+    }
+  
+    &-link {
+      @apply flex justify-start items-center ml-4 gap-2 py-5 px-5 no-underline;
+      width: -webkit-fill-available;
+      transition: .5s cubic-bezier(.32, .72, 0, 1);
+
+      &--icon {
+        @apply w-6 h-6;
+      }
+
+      &:hover,
+      &--active {
+        @apply bg-janna-100 rounded-2xl;
+        transition: .5s cubic-bezier(.32, .72, 0, 1);
+      }
+    }
+  }
 }
 
-.bricolage {
-  font-family: $headingFont;
+.dashboard-layout--main {
+  @apply md:ml-72 min-h-screen p-6;
+}
+
+.mobile-nav {
+  @apply absolute inset-0 bg-white z-[100] w-full;
+  transform: translate3d(-100%, 0, 0);
+  touch-action: none;
+  transition: transform .5s cubic-bezier(.32, .72, 0, 1);
+
+  &--open {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.mobile-overlay {
+  @apply fixed inset-0 bg-black opacity-50 z-[90];
+  transition: opacity .5s cubic-bezier(.32, .72, 0, 1);
+}
+
+.page-mobile-navbar {
+  @apply fixed top-[5rem] left-0 w-screen h-screen bg-white flex flex-col p-12;
+  // transition: transform .45s cubic-bezier(.6,.6,0,1), opacity .45s cubic-bezier(.6,.6,0,1), visibility .45s cubic-bezier(.6,.6,0,1);
+  transform: translateY(-100%) translateX(0);
+  transition: transform 400ms ease 0s;
+
+  &-open {
+    transform: translateY(0) translateX(0);
+  }
+
+  &-menu {
+    @apply flex flex-col gap-y-4;
+  }
+
+  &-actions {
+    @apply flex flex-col md:hidden mx-auto my-0 pb-10 gap-4 justify-self-end w-full;
+  }
 }

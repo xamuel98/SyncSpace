@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { CheckboxProps } from "./Checkbox.type";
-import classNames from 'classnames';
+import { cn } from "@/lib/utils";
 
 const Checkbox = ({
 	value,
@@ -39,15 +39,13 @@ const Checkbox = ({
 		}
 	};
 
-    const checkboxRootClass = classNames({
-		'cm-highlight': checked,
-        'cm-disabled': disabled,
-        'cm-invalid': invalid,
-	});
-
 	return (
 		<div
-			className={`cm-checkbox cm-component ${checkboxRootClass}`}
+			className={cn('cm-checkbox cm-component', {
+				'cm-highlight': checked,
+				'cm-disabled': disabled,
+				'cm-invalid': invalid,
+			})}
 			data-cm-highlight={checked}
 			data-cm-disabled={disabled}
 		>

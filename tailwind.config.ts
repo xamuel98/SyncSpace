@@ -24,6 +24,13 @@ const config = {
         dark: {
           950: '#202020',
           400: '#888888',
+          100: '#e7e7e7',
+          50: '#f6f6f6',
+        },
+        janna: {
+          50: '#fbf8f1',
+          100: '#F9F7F5',
+          200: '#ecddbc',
         },
 
         border: "hsl(var(--border))",
