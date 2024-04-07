@@ -9,10 +9,10 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
 		<main className='relative w-full'>
 			<AuthHeader />
 			<section className='relative min-h-screen'>
-				<aside className='bg-white w-full sm:w-[70%] lg:w-[45%] mx-auto lg:mx-0 min-h-screen max-xs:px-[24px] sm:px-[30px] lg:px-[50px] 2xl:px-[132px] auth-layout--pt pb-10'>
+				<aside className='bg-white w-full sm:w-[70%] xl:w-[45%] mx-auto xl:mx-0 min-h-screen max-xs:px-[24px] sm:px-[30px] lg:px-[50px] 2xl:px-[132px] auth-layout--pt pb-10'>
 					{children}
 				</aside>
-				<aside className='fixed right-0 top-0 bottom-0 bg-[#FFFFF5] w-full lg:w-[55%] h-screen hidden lg:flex flex-col auth-layout--pt overflow-hidden'>
+				<aside className='fixed right-0 top-0 bottom-0 bg-[#FFFFF5] w-full xl:w-[55%] h-screen hidden xl:flex flex-col auth-layout--pt overflow-x-hidden overflow-y-auto'>
 					{/* User Avatar Collage */}
 					<UserCollage />
 

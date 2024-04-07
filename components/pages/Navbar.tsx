@@ -11,8 +11,6 @@ const Navbar = () => {
     const dispatch = useAppDispatch();
 
     const pageNavbarState = useAppSelector((state) => state.mobileNav.pageNavbar);
-    console.log(pageNavbarState);
-    
 
     /**
      * @description Handle navigation sidebar open and closing on mobile

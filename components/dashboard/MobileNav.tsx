@@ -30,8 +30,14 @@ const MobileNav = () => {
             }
         })
 
-        dispatch(closeMobileNav())
-    }, [pathname]);
+        dispatch(closeMobileNav());
+
+        return () => window.removeEventListener("resize", () => {
+            if (window.innerWidth > 768) {
+                dispatch(closeMobileNav());
+            }
+        });
+    }, [dispatch, pathname]);
 
     return (
         <>
