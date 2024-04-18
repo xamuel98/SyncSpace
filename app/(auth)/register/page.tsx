@@ -1,22 +1,26 @@
 "use client";
 
-import React, { MouseEventHandler, useState } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import Checkbox from "@/components/ui/checkbox/Checkbox";
+import DynamicForm from "@/components/form/DynamicForm";
+import registerFormSchema from "./schema"
+import type { ISignupCredentials } from "@/types/Auth";
+import { useRegisterMutation } from "@/services/authApi";
+import { useErrorService, useSuccessService } from "@/hooks/useErrorSuccessService";
+import drive from "@/utils/drive";
+import { useRouter } from "next/navigation";
+import { PAGE_ROUTES } from "@/utils/constants";
 
 const Register = () => {
-	const [isPasswordVisible, setPasswordVisible] = useState<boolean>(false);
-	const [isAcceptTermsCheckboxChecked, setIsAcceptTermsCheckboxChecked] = useState(false);
+	const [register] = useRegisterMutation();
+	const registerSchema = registerFormSchema();
+	const { handleError } = useErrorService();
+	const { handleSuccess } = useSuccessService();
+	const router = useRouter();
 
-	/**
-	 * @description Toggle the password field when the user toggles on the eye icon
-	 */
-	const togglePasswordVisibility = ():
-		| MouseEventHandler<HTMLSpanElement>
-		| undefined => {
-		setPasswordVisible(!isPasswordVisible);
-		return;
-	};
+	const [isAcceptTerms, setIsAcceptTerms] = useState<boolean>(false);
+	const [agreed, setAgreed] = useState<boolean>(false);
 
 	/**
 	 * @description Handles the change event for the checkbox.
@@ -24,7 +28,44 @@ const Register = () => {
 	 * @returns {void}
 	 */
 	const handleCheckboxChange = (newValue: boolean): void => {
-		setIsAcceptTermsCheckboxChecked(newValue);
+		setIsAcceptTerms(newValue);
+		setAgreed(!newValue);
+	};
+
+	/**
+	 * @description Register user
+	 * @param values 
+	 * @returns 
+	 */
+	const submitForm = async (values: ISignupCredentials) => {
+		// Validate agreement to terms
+		if (!isAcceptTerms) {
+			setAgreed(true)
+			return
+		}
+
+		// Initiate Submission
+		if (isAcceptTerms && values) {
+			try {
+				const registerResult = await register({
+					first_name: values.first_name,
+					last_name: values.last_name,
+					email: values.email,
+					password: values.password,
+					user_type: "USER",
+				}).unwrap();
+
+				drive.set("email", values.email)
+				router.push(PAGE_ROUTES.EMAIL_VERIFICATION_ROUTE)
+
+				handleSuccess(registerResult)
+
+				return registerResult;
+			} catch (error: unknown) {
+				console.log(error);
+				handleError(error)
+			}
+		}
 	};
 
 	return (
@@ -38,97 +79,57 @@ const Register = () => {
 						Ready to begin? Sign up now and embark on an adventure
 					</p>
 				</div>
-				<div className="w-full flex flex-col gap-y-4">
-					<div className="w-full flex flex-col gap-y-2">
-						<label
-							htmlFor="full_name"
-							className="font-medium text-sm text-dark-950"
-						>
-							Full name
-						</label>
-						<input
-							type="text"
-							className="form-input"
-							placeholder="John Doe"
-						/>
-					</div>
-					<div className="w-full flex flex-col gap-y-2">
-						<label
-							htmlFor="email_address"
-							className="font-medium text-sm text-dark-950"
-						>
-							Email address
-						</label>
-						<input
-							type="email"
-							className="form-input"
-							placeholder="johndoe@email.com"
-						/>
-					</div>
-					<div className="w-full flex flex-col gap-y-2">
-						<label
-							htmlFor="password"
-							className="font-medium text-sm text-dark-950"
-						>
-							Password
-						</label>
-						<div className="w-full flex form-input">
-							<input
-								type={isPasswordVisible ? "text" : "password"}
-								className="w-full outline-none shadow-none"
-								placeholder="Enter your password"
-							/>
-							<span
-								onClick={() => togglePasswordVisibility()}
-								className={`${
-									isPasswordVisible
-										? "icon-[fluent--eye-off-24-regular]"
-										: "icon-[fluent--eye-24-regular]"
-								} text-dark-950 w-6 h-6 cursor-pointer`}
-								role="button"
-								aria-label={`${isPasswordVisible ? "Hide" : "Show"} password`}
-							></span>
-						</div>
-					</div>
-				</div>
-			</div>
-			{/* Button */}
-			<div className="flex flex-col gap-y-8 w-full">
-				<div className="flex items-start gap-x-3 w-full">
-					<Checkbox
-						value={isAcceptTermsCheckboxChecked}
-						name="accept_terms"
-						binary={true}
-						onChange={handleCheckboxChange}
-					/>
-					<label
-						htmlFor="accept_terms"
-						className="text-sm/5 font-normal text-dark-400"
-					>
-						Creating an account means you are okay with our{" "}
-						<Link href="/" className="link">
-							Terms of Service
-						</Link>{" "}
-						and{" "}
-						<Link href="/" className="link">
-							Privacy Policy
-						</Link>
-					</label>
-				</div>
-				<div className="flex flex-col justify-center items-center gap-y-4 w-full">
-					<button className="w-full bg-dark-950 p-3 font-medium text-base/7 text-white rounded-xl hover:bg-[#3d3d3d] transition-colors duration-300 ease-in-out">
-						Create account
-					</button>
-					<p className="text-sm/5 font-normal text-dark-400 text-center">
-						Already have an account?{" "}
-						<Link href="/login" className="link">
-							Log in
-						</Link>
-					</p>
-				</div>
+				<DynamicForm 
+					submit={submitForm} 
+					disableSubmit={!isAcceptTerms}
+					schema={registerSchema} 
+					enableReinitialize={true}
+					beforeBtn={
+						<>
+							<div className="flex items-start gap-x-3 w-full mt-4">
+								<Checkbox
+									value={isAcceptTerms}
+									name="accept_terms"
+									binary={true}
+									onChange={handleCheckboxChange}
+								/>
+								<label
+									htmlFor="accept_terms"
+									className="text-sm/5 font-normal text-dark-400"
+								>
+									Creating an account means you accept our{" "}
+									<Link href="/" className="link">
+										Terms of Service
+									</Link>{" "}
+									and{" "}
+									<Link href="/" className="link">
+										Privacy Policy
+									</Link>
+								</label>
+							</div>
+
+							{ agreed ? 
+								<small className="error-message">
+									Terms and conditions is required
+								</small>
+								:
+								null
+							}
+						</>
+					}
+					afterBtn={
+						<p className="text-sm/5 font-normal text-dark-400 text-center">
+							Already have an account?{" "}
+							<Link href="/login" className="link">
+								Log in
+							</Link>
+						</p>
+					}
+				/>
 			</div>
 		</div>
 	);
 };
 
 export default Register;
+

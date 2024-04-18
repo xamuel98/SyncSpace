@@ -23,7 +23,7 @@ const TheSidebar = () => {
                                 <li key={index} className={cn('sidebar-item', {'sidebar-item--active': linkIsActive})}>
                                     <Link href={path} className={cn('sidebar-item-link', {'sidebar-item-link--active': linkIsActive})}>
                                         <Icon icon={`${icon}${linkIsActive ? '-filled' : '-regular'}`} className={cn('sidebar-item-link--icon', {'text-dark-950': linkIsActive})} />
-                                        <span>{name}</span>
+                                        <span className='text-[.65rem] text-center'>{name}</span>
                                     </Link>
                                 </li>
                             )

@@ -2,9 +2,7 @@
 
 import React from "react";
 import { Provider } from "react-redux";
-import { makeStore } from "./index";
-
-const store = makeStore();
+import { store } from "./index";
 
 export default function ReduxProvider({ children }: { children: React.ReactNode }) {
 

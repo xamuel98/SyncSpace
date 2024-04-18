@@ -8,7 +8,7 @@ import { SidebarLink } from '@/types/Sidebar'
 import { cn } from '@/lib/utils';
 import { Icon } from '@iconify/react';
 import { closeMobileNav } from '@/store/reducers/mobileNavSlice';
-import { useAppSelector, useAppDispatch } from '@/store'
+import { useAppSelector, useAppDispatch } from '@/store/hooks'
 
 const MobileNav = () => {
     const pathname = usePathname();
@@ -24,19 +24,17 @@ const MobileNav = () => {
     }
 
 	useEffect(() => {
-        window.addEventListener('resize', () => {
+        const handleResize = () => {
             if (window.innerWidth > 768) {
                 dispatch(closeMobileNav());
             }
-        })
+        };
+
+		window.addEventListener("resize", handleResize);
 
         dispatch(closeMobileNav());
 
-        return () => window.removeEventListener("resize", () => {
-            if (window.innerWidth > 768) {
-                dispatch(closeMobileNav());
-            }
-        });
+		return () => window.removeEventListener("resize", handleResize);
     }, [dispatch, pathname]);
 
     return (

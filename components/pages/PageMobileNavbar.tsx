@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { closePageNavbar } from "@/store/reducers/mobileNavSlice";
-import { useAppDispatch, useAppSelector } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
 import { gsap } from 'gsap';
 
 const PageMobileNavbar = () => {
@@ -21,17 +21,17 @@ const PageMobileNavbar = () => {
 
     // On page resize when window width is greater than 768 close mobile navigation
 	useEffect(() => {
-		window.addEventListener("resize", () => {
-			if (window.innerWidth > 768) {
-				dispatch(closePageNavbar());
-			}
-		});
-
-		return () => window.removeEventListener("resize", () => {
+        const handleResize = () => {
             if (window.innerWidth > 768) {
                 dispatch(closePageNavbar());
             }
-        });
+        };
+
+		window.addEventListener("resize", handleResize);
+
+        dispatch(closePageNavbar());
+
+		return () => window.removeEventListener("resize", handleResize);
 	}, [dispatch, pathname]);
 
     // Handle the animate in and out of the slider

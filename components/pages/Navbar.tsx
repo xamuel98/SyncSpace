@@ -5,7 +5,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Icon } from '@iconify/react';
 import { togglePageNavbar } from '@/store/reducers/mobileNavSlice';
-import { useAppDispatch, useAppSelector } from '@/store'
+import { useAppDispatch, useAppSelector } from '@/store/hooks'
 
 const Navbar = () => {
     const dispatch = useAppDispatch();

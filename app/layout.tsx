@@ -1,7 +1,10 @@
 import type { Metadata } from "next";
 import { inter, bricolage_Grotesque } from '@/utils/fonts';
 import "./globals.scss";
+import 'primeicons/primeicons.css';
 import ReduxProvider from "@/store/redux-provider";
+import { PrimeReactProvider } from 'primereact/api';
+import { ToastProvider } from "@/components/ui/Toast";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,9 +19,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.variable} ${bricolage_Grotesque.variable}`}>
-        <ReduxProvider>
-          {children}
-        </ReduxProvider>
+        <ToastProvider>
+          <ReduxProvider>
+            <PrimeReactProvider>
+              {children}
+            </PrimeReactProvider>
+          </ReduxProvider>
+        </ToastProvider>
       </body>
     </html>
   );
